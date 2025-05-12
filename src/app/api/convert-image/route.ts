@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import sharp from 'sharp';
 import archiver from 'archiver';
-import { Readable } from 'stream';
 
 export async function POST(request: NextRequest) {
   try {

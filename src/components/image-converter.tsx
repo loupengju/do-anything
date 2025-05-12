@@ -160,7 +160,7 @@ export function ImageConverter() {
       const formData = new FormData();
 
       // 添加所有文件
-      selectedFiles.forEach((file, index) => {
+      selectedFiles.forEach((file) => {
         formData.append("files", file);
       });
 
