@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
+import Image from "next/image";
 
 const IMAGE_FORMATS = [
   { value: "png", label: "PNG" },
@@ -338,10 +339,13 @@ export function ImageConverter() {
                         </div>
                         <div className="flex flex-col gap-2">
                           <div className="relative h-24 w-full rounded-lg overflow-hidden border border-primary/20 shadow-md shadow-primary/10 transition-all duration-300 group-hover:shadow-primary/20">
-                            <img
+                            <Image
                               src={url}
                               alt={`预览 ${index + 1}`}
                               className="h-full w-full object-cover"
+                              width={200}
+                              height={96}
+                              unoptimized={true}
                             />
                           </div>
                           <div className="w-full min-w-0 px-1">
@@ -371,12 +375,15 @@ export function ImageConverter() {
               {previewUrls.length > 0 && (
                 <div className="flex flex-col gap-4">
                   <div className="flex justify-center items-center p-4 relative">
-                    <img
+                    <Image
                       src={previewUrls[currentPreviewIndex]}
                       alt={`预览 ${currentPreviewIndex + 1}/${
                         previewUrls.length
                       }`}
                       className="max-h-[75vh] w-auto max-w-full object-contain rounded-lg shadow-lg"
+                      width={800}
+                      height={600}
+                      unoptimized={true}
                     />
 
                     {previewUrls.length > 1 && (

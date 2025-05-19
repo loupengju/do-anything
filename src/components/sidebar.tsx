@@ -11,9 +11,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Settings, Image as ImageIcon, LogOut, Home, FileIcon } from "lucide-react";
+import { Settings, LogOut, Home } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { menuCategories } from "@/lib/sidebar-config";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -35,73 +36,51 @@ export function Sidebar() {
           </Link>
         </div>
         <div className="flex-1 overflow-auto py-4 px-2">
-          <div className="text-xs uppercase text-muted-foreground font-medium tracking-wider px-3 py-1.5">
-            应用
-          </div>
-          <nav className="grid items-start px-2 text-sm font-medium gap-0.5 mt-0.5">
-            <Link
-              href="/"
-              className={cn(
-                "flex items-center gap-2 rounded-lg px-3 py-2 transition-all hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-blue-500/20 hover:translate-x-1 group",
-                pathname === "/"
-                  ? "bg-gradient-to-r from-purple-500/30 to-blue-500/30 text-zinc-900 dark:text-zinc-50 shadow-sm"
-                  : "text-zinc-500 dark:text-zinc-400"
-              )}
-            >
-              <div
-                className={cn(
-                  "h-6 w-6 rounded-md flex items-center justify-center transition-all duration-300 shadow-sm",
-                  pathname === "/"
-                    ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white"
-                    : "bg-gradient-to-r from-purple-500/70 to-blue-500/70 text-white group-hover:from-purple-500 group-hover:to-blue-500"
-                )}
-              >
-                <ImageIcon className="h-3 w-3" />
+          {menuCategories.map((category, index) => (
+            <div key={index}>
+              <div className="text-xs uppercase text-muted-foreground font-medium tracking-wider px-3 py-1.5">
+                {category.title}
               </div>
-              <span
-                className={cn(
-                  "font-medium text-sm transition-all duration-300",
-                  pathname === "/"
-                    ? "bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent"
-                    : "group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-blue-500 group-hover:bg-clip-text group-hover:text-transparent"
-                )}
-              >
-                图片格式转换
-              </span>
-            </Link>
-          </nav>
-          <nav className="grid items-start px-2 text-sm font-medium gap-0.5 mt-0.5">
-            <Link
-              href="/svg-sprite"
-              className={cn(
-                "flex items-center gap-2 rounded-lg px-3 py-2 transition-all hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-blue-500/20 hover:translate-x-1 group",
-                pathname === "/svg-sprite"
-                  ? "bg-gradient-to-r from-purple-500/30 to-blue-500/30 text-zinc-900 dark:text-zinc-50 shadow-sm"
-                  : "text-zinc-500 dark:text-zinc-400"
-              )}
-            >
-              <div
-                className={cn(
-                  "h-6 w-6 rounded-md flex items-center justify-center transition-all duration-300 shadow-sm",
-                  pathname === "/svg-sprite"
-                    ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white"
-                    : "bg-gradient-to-r from-purple-500/70 to-blue-500/70 text-white group-hover:from-purple-500 group-hover:to-blue-500"
-                )}
-              >
-                <FileIcon className="h-3 w-3" />
-              </div>
-              <span
-                className={cn(
-                  "font-medium text-sm transition-all duration-300",
-                  pathname === "/svg-sprite"
-                    ? "bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent"
-                    : "group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-blue-500 group-hover:bg-clip-text group-hover:text-transparent"
-                )}
-              >
-                svg雪碧图
-              </span>
-            </Link>
-          </nav>
+              <nav className="grid items-start px-2 text-sm font-medium gap-0.5 mt-0.5">
+                {category.items.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={cn(
+                        "flex items-center gap-2 rounded-lg px-3 py-2 transition-all hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-blue-500/20 hover:translate-x-1 group",
+                        pathname === item.href
+                          ? "bg-gradient-to-r from-purple-500/30 to-blue-500/30 text-zinc-900 dark:text-zinc-50 shadow-sm"
+                          : "text-zinc-500 dark:text-zinc-400"
+                      )}
+                    >
+                      <div
+                        className={cn(
+                          "h-6 w-6 rounded-md flex items-center justify-center transition-all duration-300 shadow-sm",
+                          pathname === item.href
+                            ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white"
+                            : "bg-gradient-to-r from-purple-500/70 to-blue-500/70 text-white group-hover:from-purple-500 group-hover:to-blue-500"
+                        )}
+                      >
+                        <Icon className="h-3 w-3" />
+                      </div>
+                      <span
+                        className={cn(
+                          "font-medium text-sm transition-all duration-300",
+                          pathname === item.href
+                            ? "bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent"
+                            : "group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-blue-500 group-hover:bg-clip-text group-hover:text-transparent"
+                        )}
+                      >
+                        {item.label}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
+          ))}
         </div>
         <div className="mt-auto p-4">
           <Separator className="my-4 bg-primary/10" />

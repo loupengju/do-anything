@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -325,10 +326,13 @@ export default function Page() {
                           </Button>
                         </div>
                         <div className="aspect-square flex items-center justify-center overflow-hidden rounded-md">
-                          <img
+                          <Image
                             src={url}
                             alt={`SVG Preview ${index}`}
                             className="h-full w-full object-contain p-2"
+                            width={200}
+                            height={200}
+                            unoptimized={true}
                           />
                         </div>
                         <div className="mt-2 text-center text-xs truncate px-1">
@@ -370,10 +374,13 @@ export default function Page() {
               <DialogContent className="sm:max-w-md">
                 <DialogTitle>SVG预览</DialogTitle>
                 <div className="relative aspect-square w-full overflow-auto border rounded-lg p-4">
-                  <img
+                  <Image
                     src={previewUrls[currentPreviewIndex]}
                     alt="SVG Preview"
                     className="h-full w-full object-contain"
+                    width={500}
+                    height={500}
+                    unoptimized={true}
                   />
                 </div>
                 {previewUrls.length > 1 && (

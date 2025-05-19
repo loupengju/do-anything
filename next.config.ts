@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
     }
     return config;
   },
+  experimental: {
+    turbo: {
+      resolveExtensions: [".mdx", ".tsx", ".ts", ".jsx", ".js", ".json"],
+    },
+  },
 };
 
 export default nextConfig;
