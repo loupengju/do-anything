@@ -2,7 +2,18 @@
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Sidebar as ShadcnSidebar } from "@/components/ui/sidebar";
+import { 
+  Sidebar as ShadcnSidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem
+} from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -11,7 +22,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Settings, LogOut, Home } from "lucide-react";
+import { Settings, LogOut, Zap } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { menuCategories } from "@/lib/sidebar-config";
@@ -20,106 +31,92 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <ShadcnSidebar className="border-r border-primary/10 shadow-lg bg-card/95 backdrop-blur-sm">
-      <div className="flex h-full flex-col">
-        <div className="flex h-16 items-center border-b border-primary/10 px-4">
-          <Link
-            href="/"
-            className="flex items-center gap-2 font-bold text-lg transition-all duration-300 hover:scale-105 group"
-          >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-blue-500 flex items-center justify-center text-white shadow-md group-hover:shadow-primary/30 transition-all duration-300">
-              <Home className="h-4 w-4" />
+    <ShadcnSidebar>
+      <SidebarHeader>
+        <Link
+          href="/"
+          className="flex items-center gap-3 font-bold text-lg"
+        >
+          <div className="relative">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 flex items-center justify-center shadow-xl border border-white/20">
+              <div className="w-8 h-8 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <Zap className="h-4 w-4 text-white" />
+              </div>
             </div>
-            <span className="bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-primary transition-all duration-500">
+            <div className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full border-2 border-white shadow-sm">
+              <div className="w-full h-full rounded-full bg-gradient-to-r from-yellow-300 to-orange-300 animate-ping opacity-75"></div>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xl font-black bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 bg-clip-text text-transparent">
               Do Anything
             </span>
-          </Link>
-        </div>
-        <div className="flex-1 overflow-auto py-4 px-2">
-          {menuCategories.map((category, index) => (
-            <div key={index}>
-              <div className="text-xs uppercase text-muted-foreground font-medium tracking-wider px-3 py-1.5">
-                {category.title}
-              </div>
-              <nav className="grid items-start px-2 text-sm font-medium gap-0.5 mt-0.5">
+            <span className="text-xs text-muted-foreground font-medium">
+              万能工具箱
+            </span>
+          </div>
+        </Link>
+      </SidebarHeader>
+      <SidebarContent>
+        {menuCategories.map((category, index) => (
+          <SidebarGroup key={index}>
+            <SidebarGroupLabel>{category.title}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
                 {category.items.map((item) => {
                   const Icon = item.icon;
                   return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={cn(
-                        "flex items-center gap-2 rounded-lg px-3 py-2 transition-all hover:text-zinc-900 dark:hover:text-zinc-50 hover:bg-gradient-to-r hover:from-purple-500/20 hover:to-blue-500/20 hover:translate-x-1 group",
-                        pathname === item.href
-                          ? "bg-gradient-to-r from-purple-500/30 to-blue-500/30 text-zinc-900 dark:text-zinc-50 shadow-sm"
-                          : "text-zinc-500 dark:text-zinc-400"
-                      )}
-                    >
-                      <div
-                        className={cn(
-                          "h-6 w-6 rounded-md flex items-center justify-center transition-all duration-300 shadow-sm",
-                          pathname === item.href
-                            ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white"
-                            : "bg-gradient-to-r from-purple-500/70 to-blue-500/70 text-white group-hover:from-purple-500 group-hover:to-blue-500"
-                        )}
-                      >
-                        <Icon className="h-3 w-3" />
-                      </div>
-                      <span
-                        className={cn(
-                          "font-medium text-sm transition-all duration-300",
-                          pathname === item.href
-                            ? "bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent"
-                            : "group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-blue-500 group-hover:bg-clip-text group-hover:text-transparent"
-                        )}
-                      >
-                        {item.label}
-                      </span>
-                    </Link>
+                    <SidebarMenuItem key={item.href}>
+                      <SidebarMenuButton asChild isActive={pathname === item.href}>
+                        <Link href={item.href}>
+                          <Icon />
+                          <span>{item.label}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
                   );
                 })}
-              </nav>
-            </div>
-          ))}
-        </div>
-        <div className="mt-auto p-4">
-          <Separator className="my-4 bg-primary/10" />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="w-full justify-start gap-2 hover:bg-primary/10 transition-all duration-300 rounded-lg py-2.5"
-              >
-                <Avatar className="h-7 w-7 ring-1 ring-primary/30 transition-all duration-300 hover:ring-primary shadow-sm">
-                  <AvatarImage src="" />
-                  <AvatarFallback className="bg-gradient-to-r from-primary to-blue-500 text-white font-medium text-xs">
-                    用户
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col items-start">
-                  <span className="font-medium text-xs">个人设置</span>
-                  <span className="text-[10px] text-muted-foreground">
-                    管理您的账户
-                  </span>
-                </div>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              className="w-56 rounded-xl p-2 border-primary/10 shadow-lg animate-in fade-in-80 zoom-in-95"
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
+      </SidebarContent>
+      <SidebarFooter>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <DropdownMenuItem className="rounded-lg py-2 px-3 cursor-pointer hover:bg-primary/10 transition-all duration-200">
-                <Settings className="mr-2 h-4 w-4 text-primary" />
-                <span>设置</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-lg py-2 px-3 cursor-pointer hover:bg-destructive/10 transition-all duration-200 text-destructive hover:text-destructive">
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>退出</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
+              <Avatar className="h-8 w-8 rounded-lg">
+                <AvatarImage src="" />
+                <AvatarFallback className="rounded-lg bg-gradient-to-r from-primary to-blue-500 text-white">
+                  用户
+                </AvatarFallback>
+              </Avatar>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">个人设置</span>
+                <span className="truncate text-xs">管理您的账户</span>
+              </div>
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            side="bottom"
+            align="end"
+            sideOffset={4}
+          >
+            <DropdownMenuItem>
+              <Settings />
+              设置
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <LogOut />
+              退出
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarFooter>
     </ShadcnSidebar>
   );
 }

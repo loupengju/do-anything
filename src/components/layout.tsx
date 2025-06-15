@@ -3,7 +3,12 @@
 import { Sidebar } from "@/components/sidebar";
 import { BreadcrumbNav } from "@/components/breadcrumb-nav";
 import { ReactNode } from "react";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { 
+  SidebarProvider, 
+  SidebarInset, 
+  SidebarTrigger 
+} from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
 
 interface LayoutProps {
   children: ReactNode;
@@ -11,28 +16,23 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex h-screen overflow-hidden bg-gradient-to-br from-background to-background/90">
-      {/* 使用SidebarProvider包裹整个布局 */}
-      <SidebarProvider>
-        {/* 左侧边栏 */}
-        <Sidebar />
-        
-        {/* 右侧内容区域 */}
-        <div className="flex flex-col flex-1 overflow-hidden bg-background/50 backdrop-blur-sm transition-all duration-300">
-          {/* 顶部面包屑 */}
-          <BreadcrumbNav />
-          
-          {/* 内容区域 - 添加max-w-full确保内容不会溢出 */}
-          <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8 animate-[fadeIn_0.5s_ease-in-out]">
-            <div className="relative max-w-full mx-auto">
-              {/* 主要内容 - 添加宽度限制防止溢出 */}
-              <div className="relative z-10 w-full overflow-hidden">
-                {children}
-              </div>
-            </div>
-          </main>
+    <SidebarProvider>
+      <Sidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
+            <BreadcrumbNav />
+          </div>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          {children}
         </div>
-      </SidebarProvider>
-    </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }
