@@ -9,7 +9,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { usePathname } from "next/navigation";
-import { Home, ChevronRight } from "lucide-react";
 
 const pathNameMap = {
   "/svg-sprite": "svg雪碧图",
